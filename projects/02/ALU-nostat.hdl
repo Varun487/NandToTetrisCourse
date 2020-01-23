@@ -1,0 +1,35 @@
+CHIP ALU-nostat {
+    IN  
+        x[16], y[16],  // 16-bit inputs        
+        zx, // zero the x input?
+        nx, // negate the x input?
+        zy, // zero the y input?
+        ny, // negate the y input?
+        f,  // compute out = x + y (if 1) or x & y (if 0)
+        no; // negate the out output?
+
+    OUT 
+        out[16]; // 1 if (out < 0),  0 otherwise
+
+    PARTS:
+    // Put you code here:
+    // processing x
+    Mux16 (a=x, b=false, sel=zx, out=zxout); //maybeZeroedX  = zxout
+    Not16 (in=zxout, out=notzxout); //negX = notzxout
+    Mux16 (a=zxout, b=notzxout, sel=nx, out=nxout); //transformedX = nxout
+    
+    // processing y
+    Mux16 (a=y, b=false, sel=zy, out=zyout); //maybeZeroedY = zyout
+    Not16 (in=zyout, out=notzyout); //negY = notzyout
+    Mux16 (a=zyout, b=notzyout, sel=ny, out=nyout); //transformedY = nyout
+
+    // sum and addition of x and y for f input
+    Add16 (a=nxout, b=nyout, out=xplusy); //sum = xplusy
+    And16 (a=nxout, b=nyout, out=xandy); //and = xandy
+
+    // getting fout and its negation
+    Mux16 (a=xandy, b=xplusy, sel=f, out=fout); //output = fout
+    Not16 (in=fout, out=notfout); //negatedOutput = notfout
+
+    Mux16 (a=fout, b=notfout, sel=no,  out=out);
+}
