@@ -1,6 +1,6 @@
-## NandToTetrisCourse
+## Build a Modern Computer from First Principles: From Nand to Tetris Course
 
-This repo has all the files pertaining to the course `From Nand To Tertris part 1` from coursera: 
+This repo has all the files pertaining to the course `Build a Modern Computer from First Principles: From Nand to Tetris` from coursera: 
 
 Course Link: https://www.coursera.org/learn/build-a-computer
 
